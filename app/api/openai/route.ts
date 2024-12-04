@@ -5,27 +5,31 @@ import { z } from 'zod';
 import type { OpenaiTypes } from '@/types';
 
 export async function POST(req: NextRequest) {
-    
-    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });//.envファイルからAPIキーを取得（.envはリモートリポジトリにはない）
+    try {
+        const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-    const schema = z.object({//zodを使い出力の構造を指定する
-        score: z.number(),
-        feedback: z.string(),
-    });
+        const schema = z.object({
+            score: z.number(),
+            feedback: z.string(),
+        });
 
-    const {prompt,model,system}= (await req.json()) as OpenaiTypes;//request bodyからプロンプト、モデル、システムプロンプトを取得
+        const { prompt, model, system } = (await req.json()) as OpenaiTypes;
 
-    const completion = await openai.beta.chat.completions.parse({ //openaiAPIの呼び出し
-        model: model,
-        messages: [
-            { role: "system", content: system},
-            { role: "user", content: prompt},
-        ],
-        response_format: zodResponseFormat(schema, "schema"),
-    });
+        const completion = await openai.beta.chat.completions.parse({
+            model: model,
+            messages: [
+                { role: "system", content: system },
+                { role: "user", content: prompt },
+            ],
+            response_format: zodResponseFormat(schema, "schema"),
+        });
 
-    const response = completion.choices[0].message.parsed;//必要な情報を取得
-    console.log(response);
+        const response = completion.choices[0].message.parsed;
+        console.log(response);
 
-    return NextResponse.json(response); // 中間APIのレスポンスを返す
+        return NextResponse.json(response);
+    } catch (e) {
+        console.error('Error during OpenAI API call:', e);
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    }
 }
