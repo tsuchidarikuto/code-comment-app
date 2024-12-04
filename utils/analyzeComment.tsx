@@ -1,0 +1,48 @@
+'use client';
+import { ResultTypes } from "@/types";
+
+export default async function analyzeComment(codeWithComment: string){
+    try {
+        const model = "gpt-4o-mini-2024-07-18";
+        const system = `
+            あなたは熟練したプログラマーで教師です。入力されるコードに対するユーザーのコメントを分析してください。
+            コメントがついていないコードは0点として評価してください。
+            ユーザーは直接コードにコメントを追加しています。
+
+            以下の点を考慮して評価してください：
+            1. コードの理解度
+            2. コメントの適切さと正確さ
+            3. プログラミングの概念の理解
+            4. コードの改善点や最適化の提案（もしあれば）
+
+            ユーザーのコード理解度を10点満点で評価し、詳細なフィードバックを提供してください。
+            以下のJSON形式で回答を提供してください
+            {
+                score: <10点満点での評価>,
+                feedback: "<ユーザーの理解度に関する詳細なフィードバック>"
+            }
+            `
+        const prompt = codeWithComment;
+
+        const response = await fetch('api/openai', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                model: model,
+                system:system,
+                prompt: prompt,
+                
+            }),
+        });        
+        
+        const data = await response.json();
+        
+        return data;
+
+    } catch (e) {
+        console.log(e);
+        return `on analyzecomment ${e}`;
+    }
+}
