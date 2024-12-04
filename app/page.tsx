@@ -7,13 +7,16 @@ import { ResultTypes } from "@/types";
 import { set } from "zod";
 
 export default function Home() {
-  const [code, setCode] = useState("console.log('Hello, World!');");
+  const [code, setCode] = useState("console.log('Hello, World!');");//後から編集する、DBから取得？
+
   const [score, setScore] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<string>("");
 
   const handleClick = async (): Promise<void> => {
     try{
-    const analyzedResult: ResultTypes = await analyzeComment(code);
+    //コメント付きコードを解析
+    //戻り値はJSON形式でスコアとフィードバック
+      const analyzedResult: ResultTypes = await analyzeComment(code);
     
     setScore(analyzedResult.score);
     setFeedback(analyzedResult.feedback);
@@ -21,11 +24,13 @@ export default function Home() {
 
     
     }catch(e){
-      console.log(`on page.tsx${e}`);
+      console.log(`採点中にエラーだよ${e}`);
     }
   }
 
+
   return (
+    //フロントはMUIで作成。
     <Box sx={{ width: '100%', mt: 10, margin: 2 }}>
     <Container>
     <Stack spacing={5}>
@@ -49,10 +54,7 @@ export default function Home() {
           <Typography>
             フィードバック: {feedback}
           </Typography>
-          </Box>
-        
-      
-     
+          </Box>                
           <Button variant="contained" sx = {{width:"fit-content",alignSelf:"left"}}onClick={handleClick}>採点</Button>
           
      </Stack>
