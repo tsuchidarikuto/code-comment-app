@@ -1,5 +1,5 @@
 'use client';
-import { ResultTypes } from "@/types";
+
 
 export default async function analyzeComment(codeWithComment: string){
     try {        

@@ -1,10 +1,10 @@
 'use client';
 
-import { Button,Box, Stack, Typography, Container,TextField,CardActions } from "@mui/material";
-import { useState,useEffect } from "react";
+import { Button,Box, Stack, Typography, Container,TextField } from "@mui/material";
+import { useState } from "react";
 import analyzeComment from "@/utils/analyzeComment";
 import { ResultTypes } from "@/types";
-import { set } from "zod";
+
 
 export default function Home() {
   const [code, setCode] = useState("console.log('Hello, World!');");//後から編集する、DBから取得？
