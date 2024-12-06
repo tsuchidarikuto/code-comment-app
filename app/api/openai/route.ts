@@ -6,7 +6,7 @@ import type { OpenaiTypes } from '@/types';
 
 export async function POST(req: NextRequest) {
     try {
-        const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+        const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });//yo
 
         const schema = z.object({
             score: z.number(),
