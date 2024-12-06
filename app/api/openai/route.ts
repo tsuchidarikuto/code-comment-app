@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 
         const response = completion.choices[0].message.parsed;
         console.log(response);
-
+//hello
         return NextResponse.json(response);
     } catch (e) {
         console.error('Error during OpenAI API call:', e);
