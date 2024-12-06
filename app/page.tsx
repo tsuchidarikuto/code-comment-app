@@ -7,7 +7,7 @@ import { ResultTypes } from "@/types";
 
 
 export default function Home() {
-  const [code, setCode] = useState("console.log('Hello, World!');");//後から編集する、DBから取得？
+  const [code, setCode] = useState("console.log('Hello, World2!');");//後から編集する、DBから取得？
 
   const [score, setScore] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<string>("");
