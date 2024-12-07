@@ -1,17 +1,17 @@
 'use client';
 
-import { Box, Grid, Typography, Card, Button } from "@mui/material";
+import { Box, Grid, Typography, Card, Button, Container } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { scores,feedbacks } from "../page";
 import { historyTypes } from "@/types";
 import { renderRadarChart } from "../Chart";
 import { loadFromLocalStorage } from "@/utils/useLocalStrage";
 
 export default function History() {
   const router = useRouter();
-  const pre:historyTypes[] = loadFromLocalStorage();
+  const pre:historyTypes[] = loadFromLocalStorage().filter((his: any) => Array.isArray(his) && his.length > 0);
   return (
     <Box sx={{ width: "100%"}}>
+      <Container>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Button 
             variant="text" 
@@ -76,6 +76,7 @@ export default function History() {
           </Box>
         </Box>
       ))}
+      </Container>
     </Box>
   );
 }
