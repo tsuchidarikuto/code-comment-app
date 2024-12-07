@@ -95,41 +95,40 @@ export default function Home() {
             </Button>
           </Box>
         </Stack>
-      </Container>
       {/* stateがFeedBackの場合のみ見えるブロック */}
       {state === FeedBack && (
-  <Box>
-    <Typography variant="h5" sx={{ mt: 3 }}>採点結果</Typography>
-    <Grid container spacing={2}>
-      {/* コードの理解 */}
-      <Grid item xs={6} sx={{ overflow: "hidden" }}>
-        <Typography>コードの理解</Typography>
-        <Typography>点数:{score} / 10</Typography>
-      </Grid>
+        <Box>
+          <Typography variant="h5" sx={{ mt: 3 }}>採点結果</Typography>
+          <Grid container spacing={2}>
+            {/* コードの理解 */}
+            <Grid item xs={6} sx={{ overflow: "hidden" }}>
+              <Typography>コードの理解</Typography>
+              <Typography>点数:{score} / 10</Typography>
+            </Grid>
 
-      {/* コメントの評価 */}
-      <Grid item xs={6} sx={{ overflow: "hidden" }}>
-        <Typography>コメントの評価</Typography>
-        <Typography>点数:{score} / 10</Typography>
-      </Grid>
+            {/* コメントの評価 */}
+            <Grid item xs={6} sx={{ overflow: "hidden" }}>
+              <Typography>コメントの評価</Typography>
+              <Typography>点数:{score} / 10</Typography>
+            </Grid>
 
-      {/* コードの理解についてのフィードバック */}
-      <Grid item xs={6}>
-        <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "80%" }}>
-          <Typography>コードの理解についてのフィードバック</Typography>
+            {/* コードの理解についてのフィードバック */}
+            <Grid item xs={6}>
+              <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "80%" }}>
+                <Typography>コードの理解についてのフィードバック</Typography>
+              </Box>
+            </Grid>
+
+            {/* コメントの評価についてのフィードバック */}
+            <Grid item xs={6}>
+              <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "80%" }}>
+                <Typography>コメントの評価についてのフィードバック</Typography>
+              </Box>
+            </Grid>
+          </Grid>
         </Box>
-      </Grid>
-
-      {/* コメントの評価についてのフィードバック */}
-      <Grid item xs={6}>
-        <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "80%" }}>
-          <Typography>コメントの評価についてのフィードバック</Typography>
-        </Box>
-      </Grid>
-    </Grid>
-  </Box>
-)}
-
+      )}
+      </Container>
     </Box>
   );
 }
