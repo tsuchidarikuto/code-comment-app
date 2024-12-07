@@ -16,8 +16,16 @@ export async function POST(req: NextRequest) {
         //スキーマ名によってスキーマを変更        
         if(schemaName === "analyzeComment"){ //コメント分析
             schema = z.object({
-                score: z.number(),
-                feedback: z.string(),
+                scores: z.object({
+                    appropriateness: z.number(),
+                    clarity: z.number(),
+                    consistency: z.number(),
+                    usefulness: z.number(),
+                }),
+                feedbacks: z.object({
+                    codeFeedback: z.string(),
+                    commentFeedback: z.string(),
+                }),                
             });
         } else if(schemaName === "createHint"){//ヒント作成
             schema = undefined;
