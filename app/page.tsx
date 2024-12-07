@@ -1,11 +1,10 @@
 'use client';
 
 import { Button,Box, Stack, Typography, Container,TextField, Select, MenuItem, Grid } from "@mui/material";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import analyzeComment from "@/utils/analyzeComment";
 import { ResultTypes } from "@/types";
 import questions from "@/app/problems";
-import { auto } from "openai/_shims/registry.mjs";
 import { useRouter } from "next/navigation";
 
 
@@ -52,18 +51,23 @@ export default function Home() {
         <Stack spacing={5}>
           {/* ヘッダー */}
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <Button variant="text" component="h1" sx={{ textAlign: 'left' }}>
-        code-comment-add
-      </Button>
-      <Button
-        variant="text"
-        component="h1"
-        sx={{ textAlign: 'right' }}
-        onClick={() => router.push('/history')} // 履歴ページに遷移
-      >
-        履歴
-      </Button>
-    </Box>
+            <Button 
+              variant="text" 
+              component="h1" 
+              sx={{ textAlign: 'left' }}
+              onClick={() => router.push('/')}
+              >
+              code-comment-add
+            </Button>
+            <Button
+              variant="text"
+              component="h1"
+              sx={{ textAlign: 'right' }}
+              onClick={() => router.push('/history')} // 履歴ページに遷移
+            >
+              履歴
+            </Button>
+          </Box>
 
           {/* 問題選択 */}
           <Box sx={{ display: 'flex', gap: 2, width: '100%', justifyContent: 'space-between' }}>
@@ -94,7 +98,7 @@ export default function Home() {
           
           <TextField
             multiline
-            rows={10}
+            rows={code.split('\n').length || 1}/* codeの行数にしたい */
             value={code}
             onChange={(e) => setCode(e.target.value)}
             sx={{ width: "100%", alignSelf: "center"}}
