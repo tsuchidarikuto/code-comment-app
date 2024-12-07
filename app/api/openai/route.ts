@@ -17,6 +17,7 @@ export async function POST(req: NextRequest) {
         if(schemaName === "analyzeComment"){ //コメント分析
             schema = z.object({
                 scores: z.object({
+                    knowledge: z.number(),
                     appropriateness: z.number(),
                     clarity: z.number(),
                     consistency: z.number(),
