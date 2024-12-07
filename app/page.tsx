@@ -4,7 +4,7 @@ import { Button,Box, Stack, Typography, Container,TextField, Select, MenuItem, G
 import { useState, useEffect } from "react";
 import analyzeComment from "@/utils/analyzeComment";
 import { ResultTypes } from "@/types";
-import questions from "@/app/problems";
+import { getProblemByTitle ,getTitles} from "@/app/problems";
 import { useRouter } from "next/navigation";
 
 
@@ -20,32 +20,33 @@ export default function Home() {
   const FeedBack = 102;
 
 
-  const questionNameList:string[] = [
-    "問題1","問題2","問題3"
-  ]
+  const questionNameList:string[] = getTitles();
 
-  useEffect(() => {
-    setCode(questions[0]);
-  }
-  , []);
+  // useEffect(() => {
+  //   setCode(questions[0]);
+  // }
+  // , []);
   
   const handleClick = async (): Promise<void> => {
-    try {
-      // コメント付きコードを解析
-          //戻り値はJSON形式でスコアとフィードバック
-      const analyzedResult: ResultTypes = await analyzeComment(code);
-      setScore(analyzedResult.score);
-      setFeedback(analyzedResult.feedback);
-      setState(FeedBack);
-    } catch (e) {
-      console.log(`採点中にエラーだよ ${e}`);
+    try{
+    //コメント付きコードを解析
+    //戻り値はJSON形式でスコアとフィードバック
+    const analyzedResult: ResultTypes = await analyzeComment(code);
+    
+    setScore(analyzedResult.scores.appropriateness);
+    setFeedback(analyzedResult.feedbacks.codeFeedback);
+    
+
+    
+    }catch(e){
+      console.log(`採点中にエラーだよ${e}`);
     }
   };
 
   const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     const selectedIndex = event.target.value as string;
     setSelectedProblem(selectedIndex);
-    // setCode(questions[selectedIndex]); // 選ばれた問題に基づいてコードを更新
+    setCode(getProblemByTitle(selectedIndex)); // 選ばれた問題に基づいてコードを更新
   };
 
   const router = useRouter();

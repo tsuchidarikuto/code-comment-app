@@ -16,19 +16,22 @@ export async function POST(req: NextRequest) {
         //スキーマ名によってスキーマを変更        
         if(schemaName === "analyzeComment"){ //コメント分析
             schema = z.object({
-                score: z.number(),
-                feedback: z.string(),
+                scores: z.object({
+                    appropriateness: z.number(),
+                    clarity: z.number(),
+                    consistency: z.number(),
+                    usefulness: z.number(),
+                }),
+                feedbacks: z.object({
+                    codeFeedback: z.string(),
+                    commentFeedback: z.string(),
+                }),                
             });
         } else if(schemaName === "createHint"){//ヒント作成
             schema = undefined;
         } else if(schemaName === "undefined"){//未定義
             schema = undefined;
         }
-
-        console.log(`schemaName:${schemaName}`);
-        console.log(schema);
-
-
 
         const completion = await openai.beta.chat.completions.parse({
             model: model,
@@ -40,7 +43,6 @@ export async function POST(req: NextRequest) {
         });
         //スキーマが存在する場合はオブジェクトを、存在しない場合はテキストを返す 
         const response = schema ? completion.choices[0].message.parsed : completion.choices[0].message.content;
-        console.log(response);
 
         return NextResponse.json(response);
     } catch (e) {
