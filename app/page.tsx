@@ -37,7 +37,7 @@ export default function Home() {
 
   const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSelectedProblem(event.target.value as string);
-    setCode(event.target.value as string)
+    setCode(questions[event.target.value as number])
     // 問題を受け取り、setCodeを使用
   };
 
@@ -61,9 +61,9 @@ export default function Home() {
               sx={{ width: 300 }}
             >
               <MenuItem value="" disabled>問題を選択</MenuItem>
-              <MenuItem value="問題1">問題1</MenuItem>
-              <MenuItem value="問題2">問題2</MenuItem>
-              <MenuItem value="問題3">問題3</MenuItem>
+              <MenuItem value="1">問題1</MenuItem>
+              <MenuItem value="2">問題2</MenuItem>
+              <MenuItem value="3">問題3</MenuItem>
             </Select>
           </Box>
 
