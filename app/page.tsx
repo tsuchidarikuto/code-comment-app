@@ -131,8 +131,17 @@ export default function Home() {
           </Box>
 
           {state === OpenHint && (
-            <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "80%" }}>
-              <Typography>{hint}</Typography>
+            <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "100%", borderRadius: 2, boxShadow: 1, backgroundColor: "#fffff9", position: 'relative' }}>
+            <Box sx={{ position: 'absolute', top: 0, left: -10, backgroundColor: 'transparent', borderRadius: '50%', padding: '10px 10px', border: 'none', fontSize: '28px' }}>
+              💡
+            </Box>
+            <Typography variant="body1" color="textSecondary" sx={{ paddingLeft: 4 }}>
+            {hint.split(' ').map((word, index) => (
+              <span key={index}>
+                {word.includes('`') ? <code>{word.replace(/`/g, '')}</code> : word}{' '}
+              </span>
+            ))}
+          </Typography>
             </Box>
           )}
           {/* コード入力 */}
