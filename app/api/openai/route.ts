@@ -19,6 +19,8 @@ export async function POST(req: NextRequest) {
                 score: z.number(),
                 feedback: z.string(),
             });
+        } else if(schemaName === "createHint"){//ヒント作成
+            schema = undefined;
         } else if(schemaName === "undefined"){//未定義
             schema = undefined;
         }
