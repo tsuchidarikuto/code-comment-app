@@ -3,12 +3,12 @@
 import { Box, Grid, Typography, Card, Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { scores,feedbacks } from "../page";
-import { ResultTypes } from "@/types";
+import { historyTypes } from "@/types";
 import { renderRadarChart } from "../Chart";
 
 export default function History() {
   const router = useRouter();
-  const pre:ResultTypes[] = [
+  const pre:historyTypes[] = [
   //   {scores: {
   //     knowledge:5,//基礎知識
   //     appropriateness:6,//適切性
