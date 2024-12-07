@@ -6,6 +6,7 @@ import analyzeComment from "@/utils/analyzeComment";
 import { ResultTypes } from "@/types";
 import questions from "@/app/problems";
 import { auto } from "openai/_shims/registry.mjs";
+import { useRouter } from "next/navigation";
 
 
 export default function Home() {
@@ -43,15 +44,26 @@ export default function Home() {
     setCode(questions[selectedIndex]); // 選ばれた問題に基づいてコードを更新
   };
 
+  const router = useRouter();
+  
   return (
     <Box sx={{ width: '100%', mt: 10, margin: 2 }}>
       <Container>
         <Stack spacing={5}>
           {/* ヘッダー */}
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Button variant="text" component="h1" sx={{ textAlign: 'left' }}>code-comment-add</Button>
-            <Button variant="text" component="h1" sx={{ textAlign: 'right' }}>履歴</Button>
-          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Button variant="text" component="h1" sx={{ textAlign: 'left' }}>
+        code-comment-add
+      </Button>
+      <Button
+        variant="text"
+        component="h1"
+        sx={{ textAlign: 'right' }}
+        onClick={() => router.push('/history')} // 履歴ページに遷移
+      >
+        履歴
+      </Button>
+    </Box>
 
           {/* 問題選択 */}
           <Box sx={{ display: 'flex', gap: 2, width: '100%', justifyContent: 'space-between' }}>
