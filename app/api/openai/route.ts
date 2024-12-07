@@ -36,10 +36,10 @@ export async function POST(req: NextRequest) {
             ],
             response_format: schema ? zodResponseFormat(schema, "schema"):undefined,
         });
-
+        //スキーマが存在する場合はオブジェクトを、存在しない場合はテキストを返す 
         const response = schema ? completion.choices[0].message.parsed : completion.choices[0].message.content;
         console.log(response);
-//hello
+
         return NextResponse.json(response);
     } catch (e) {
         console.error('Error during OpenAI API call:', e);
