@@ -5,23 +5,11 @@ import { useRouter } from "next/navigation";
 import { scores,feedbacks } from "../page";
 import { historyTypes } from "@/types";
 import { renderRadarChart } from "../Chart";
+import { loadFromLocalStorage } from "@/utils/useLocalStrage";
 
 export default function History() {
   const router = useRouter();
-  const pre:historyTypes[] = [
-  //   {scores: {
-  //     knowledge:5,//基礎知識
-  //     appropriateness:6,//適切性
-  //     clarity:8,//明確性
-  //     consistency:10,//一貫性
-  //     usefulness:8//有用性
-  // },
-  // feedbacks: {
-  //     codeFeedback:"ここでコードがちゃんと理解できているかを確認します",//コードの読解に関するフィードバック
-  //     commentFeedback:"コメントが適切に書かれているかを各インします"//コメントの適切さに関するフィードバック
-  // }
-  // }  
-  ];
+  const pre:historyTypes[] = loadFromLocalStorage();
   return (
     <Box sx={{ width: "100%"}}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -47,6 +35,12 @@ export default function History() {
       </Typography>
       {pre.map((his,i)=>(
           <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "100%", margin:"20px"}} key={i}>
+            <Typography variant="h4">{his.title}</Typography>
+            <Card sx={{ padding: 2, backgroundColor: "#f5f5f5", whiteSpace: "pre-wrap" }}>
+            <Typography component="pre" sx={{ fontFamily: "monospace" }}>
+              {his.code}
+            </Typography>
+          </Card> 
             <Box sx={{ display:"flex" }}>
                 {/* ここに、レーダーチャートとフィードバックを入れたい */}
                 <Grid container spacing={4} justifyContent="space-between" alignItems="flex-start">
