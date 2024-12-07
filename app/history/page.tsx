@@ -1,44 +1,17 @@
 'use client';
 
-import { Box, Grid, Typography, Card, Button } from "@mui/material";
+import { Box, Grid, Typography, Card, Button, Container } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { historyTypes } from "@/types";
+import { renderRadarChart } from "../Chart";
+import { loadFromLocalStorage } from "@/utils/useLocalStrage";
 
-interface history{
-  answer:string,
-  CommentPoint:number,
-  CommentFeedBack:string,
-  ComprehensionPoint:number,
-  ComprehensionFeedBack:string,
-}
 export default function History() {
   const router = useRouter();
-  const pre:history[] = [
-  //   {
-  //     answer: `function sumArray(numbers) {
-  //     let sum = 0;
-  //     for (let number of numbers) {
-  //         sum += number;
-  //     }
-  //     return sum;
-  // }
-  
-  // const numbers = [1, 2, 3, 4, 5];
-  // console.log('Sum:', sumArray(numbers));`,
-  //     CommentPoint: 8,
-  //     CommentFeedBack: "コメントが適切に記載されていますが、詳細さが不足しています。",
-  //     ComprehensionPoint: 9,
-  //     ComprehensionFeedBack: "コードの動作をほぼ完全に理解しています。",
-  //   },
-  //   {
-  //     answer: "let x = 10; console.log(x * 2);",
-  //     CommentPoint: 7,
-  //     CommentFeedBack: "コメントがあるが、より具体的な説明が望ましいです。",
-  //     ComprehensionPoint: 8,
-  //     ComprehensionFeedBack: "基本的な動作は理解していますが、変数のスコープについての説明が不足しています。",
-  //   }
-  ];
+  const pre:historyTypes[] = loadFromLocalStorage().filter((his: any) => Array.isArray(his) && his.length > 0);
   return (
-    <Box sx={{ width: "100%", padding: 2 }}>
+    <Box sx={{ width: "100%"}}>
+      <Container>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Button 
             variant="text" 
@@ -61,42 +34,49 @@ export default function History() {
         履歴
       </Typography>
       {pre.map((his,i)=>(
-        <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "80%", margin:"20px"}} key={i}>
-          <Card sx={{ padding: 2, backgroundColor: "#f5f5f5", whiteSpace: "pre-wrap" }}>
+          <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "100%", margin:"20px"}} key={i}>
+            <Typography variant="h4">{his.title}</Typography>
+            <Card sx={{ padding: 2, backgroundColor: "#f5f5f5", whiteSpace: "pre-wrap" }}>
             <Typography component="pre" sx={{ fontFamily: "monospace" }}>
-              {his.answer}
+              {his.code}
             </Typography>
-          </Card>        
-          <Typography variant="h5" sx={{ mt: 3 }}>採点結果</Typography>
-          <Grid container spacing={2}>
-            {/* コードの理解 */}
-            <Grid item xs={6} sx={{ overflow: "hidden" }}>
-              <Typography>コードの理解</Typography>
-              <Typography>点数:{his.ComprehensionPoint} / 10</Typography>
+          </Card> 
+            <Box sx={{ display:"flex" }}>
+                {/* ここに、レーダーチャートとフィードバックを入れたい */}
+                <Grid container spacing={4} justifyContent="space-between" alignItems="flex-start">
+                  {/* レーダーチャート */}
+                  <Grid item xs={12} md={6}>
+                    <Box>
+                      {renderRadarChart(his.scores)}
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      height: '100%', // 必要に応じて調整
+                    }}
+                  >
+                    <Typography variant="h5" gutterBottom>
+                      フィードバック
+                    </Typography>
+                    <Card sx={{ padding: 2, marginBottom: 2 }}>
+                      <Typography variant="h6">コードの読解に関するフィードバック</Typography>
+                      <Typography>{his.feedbacks.codeFeedback}</Typography>
+                    </Card>
+                    <Card sx={{ padding: 2 }}>
+                      <Typography variant="h6">コメントの適切さに関するフィードバック</Typography>
+                      <Typography>{his.feedbacks.commentFeedback}</Typography>
+                    </Card>
+                  </Box>
+              </Grid>
             </Grid>
-
-            {/* コメントの評価 */}
-            <Grid item xs={6} sx={{ overflow: "hidden" }}>
-              <Typography>コメントの評価</Typography>
-              <Typography>点数:{his.CommentPoint} / 10</Typography>
-            </Grid>
-
-            {/* コードの理解についてのフィードバック */}
-            <Grid item xs={6}>
-              <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "80%" }}>
-                <Typography>{his.ComprehensionFeedBack}</Typography>
-              </Box>
-            </Grid>
-
-            {/* コメントの評価についてのフィードバック */}
-            <Grid item xs={6}>
-              <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "80%" }}>
-                <Typography>{his.ComprehensionFeedBack}</Typography>
-              </Box>
-            </Grid>
-          </Grid>
+          </Box>
         </Box>
       ))}
+      </Container>
     </Box>
   );
 }
