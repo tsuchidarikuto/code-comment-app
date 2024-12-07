@@ -33,11 +33,6 @@ export async function POST(req: NextRequest) {
             schema = undefined;
         }
 
-        console.log(`schemaName:${schemaName}`);
-        console.log(schema);
-
-
-
         const completion = await openai.beta.chat.completions.parse({
             model: model,
             messages: [
@@ -48,7 +43,6 @@ export async function POST(req: NextRequest) {
         });
         //スキーマが存在する場合はオブジェクトを、存在しない場合はテキストを返す 
         const response = schema ? completion.choices[0].message.parsed : completion.choices[0].message.content;
-        console.log(response);
 
         return NextResponse.json(response);
     } catch (e) {
