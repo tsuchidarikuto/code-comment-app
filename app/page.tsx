@@ -8,6 +8,7 @@ import { ResultTypes } from "@/types";
 import { getProblemByTitle ,getTitles} from "@/app/problems";
 import { useRouter } from "next/navigation";
 import { renderRadarChart } from "./Chart";
+import { saveToLocalStorage } from "@/utils/useLocalStrage";
 
 export interface scores{
     knowledge:number;//基礎知識
@@ -29,6 +30,7 @@ export default function Home() {
   const [selectedProblem, setSelectedProblem] = useState<string>("");
   const [state, setState] = useState<number>(100);
   const [hint, sethint] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
 
   const Answering = 100;
   const OpenHint = 101;
@@ -61,6 +63,9 @@ export default function Home() {
     // },)
     setState(FeedBack)
     analyzeComment(code).then(analyzedResult=>{
+          if(!saveToLocalStorage(analyzedResult,title,code)){
+            alert("保存に失敗しました")
+          }
           setScore(analyzedResult.scores);
           setFeedback(analyzedResult.feedbacks);
           setState(FeedBack);
@@ -71,9 +76,10 @@ export default function Home() {
   };
 
   const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    const selectedIndex = event.target.value as string;
-    setSelectedProblem(selectedIndex);
-    setCode(getProblemByTitle(selectedIndex)); // 選ばれた問題に基づいてコードを更新
+    const selectedTitle = event.target.value as string;
+    setTitle(selectedTitle);
+    setSelectedProblem(selectedTitle);
+    setCode(getProblemByTitle(selectedTitle)); // 選ばれた問題に基づいてコードを更新
   };
 
   const fetchHint = async (): Promise<void> => {
