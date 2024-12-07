@@ -19,6 +19,11 @@ export default function Home() {
   const OpenHint = 101;
   const FeedBack = 102;
 
+
+  const questionNameList:string[] = [
+    "問題1","問題2","問題3"
+  ]
+
   useEffect(() => {
     setCode(questions[0]);
   }
@@ -38,9 +43,9 @@ export default function Home() {
   };
 
   const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    const selectedIndex = event.target.value as number;
+    const selectedIndex = event.target.value as string;
     setSelectedProblem(selectedIndex);
-    setCode(questions[selectedIndex]); // 選ばれた問題に基づいてコードを更新
+    // setCode(questions[selectedIndex]); // 選ばれた問題に基づいてコードを更新
   };
 
   const router = useRouter();
@@ -79,9 +84,10 @@ export default function Home() {
               sx={{ width: 300 }}
             >
               <MenuItem value="" disabled>問題を選択</MenuItem>
-              <MenuItem value={0}>問題1</MenuItem>
+              {/* <MenuItem value={0}>問題1</MenuItem>
               <MenuItem value={1}>問題2</MenuItem>
-              <MenuItem value={2}>問題3</MenuItem>
+              <MenuItem value={2}>問題3</MenuItem> */}
+              {questionNameList.map((questionName)=>(<MenuItem value={questionName}>{questionName}</MenuItem>))}
             </Select>
           </Box>
 
@@ -101,7 +107,7 @@ export default function Home() {
             rows={code.split('\n').length || 1}/* codeの行数にしたい */
             value={code}
             onChange={(e) => setCode(e.target.value)}
-            sx={{ width: "100%", alignSelf: "center"}}
+            sx={{ width: "100%", alignSelf: "center", backgroundColor: "#f5f5f5"}}
             disabled={state === FeedBack}
           />
           {/* 採点ボタン */}

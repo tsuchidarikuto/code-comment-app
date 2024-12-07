@@ -1,8 +1,7 @@
 'use client';
 
-import { Box, Grid, Typography, Card, CardContent, Button } from "@mui/material";
+import { Box, Grid, Typography, Card, Button } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { auto } from "openai/_shims/registry.mjs";
 
 interface history{
   answer:string,
@@ -36,7 +35,7 @@ export default function History() {
   //     CommentFeedBack: "コメントがあるが、より具体的な説明が望ましいです。",
   //     ComprehensionPoint: 8,
   //     ComprehensionFeedBack: "基本的な動作は理解していますが、変数のスコープについての説明が不足しています。",
-  //   },
+  //   }
   ];
   return (
     <Box sx={{ width: "100%", padding: 2 }}>
