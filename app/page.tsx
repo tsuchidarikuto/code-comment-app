@@ -1,19 +1,34 @@
 'use client';
 
-import { Button,Box, Stack, Typography, Container,TextField, Select, MenuItem, Grid } from "@mui/material";
+import { Button,Box, Stack, Typography, Container,TextField, Select, MenuItem, Grid, Card } from "@mui/material";
 import { useState, useEffect } from "react";
 import analyzeComment from "@/utils/analyzeComment";
+import createHint from "@/utils/createHint";
 import { ResultTypes } from "@/types";
 import { getProblemByTitle ,getTitles} from "@/app/problems";
 import { useRouter } from "next/navigation";
+import { renderRadarChart } from "./Chart";
 
+export interface scores{
+    knowledge:number;//基礎知識
+    appropriateness:number;//適切性
+    clarity:number;//明確性
+    consistency:number;//一貫性
+    usefulness:number;//有用性
+}
+
+export interface feedbacks{
+    codeFeedback:string;//コードの読解に関するフィードバック
+    commentFeedback:string;//コメントの適切さに関するフィードバック
+}
 
 export default function Home() {
   const [code, setCode] = useState("");
-  const [score, setScore] = useState<number | null>(null);
-  const [feedback, setFeedback] = useState<string>("");
+  const [score, setScore] = useState<scores>();
+  const [feedback, setFeedback] = useState<feedbacks>();
   const [selectedProblem, setSelectedProblem] = useState<string>("");
   const [state, setState] = useState<number>(100);
+  const [hint, sethint] = useState<string>("");
 
   const Answering = 100;
   const OpenHint = 101;
@@ -31,13 +46,25 @@ export default function Home() {
     try{
     //コメント付きコードを解析
     //戻り値はJSON形式でスコアとフィードバック
-    const analyzedResult: ResultTypes = await analyzeComment(code);
     
-    setScore(analyzedResult.scores.appropriateness);
-    setFeedback(analyzedResult.feedbacks.codeFeedback);
     
-
-    
+    // setScore({
+    //   knowledge: 8,
+    //   appropriateness: 7,
+    //   clarity: 9,
+    //   consistency: 6,
+    //   usefulness: 8,
+    // });
+    // setFeedback({
+    //   codeFeedback: "コードは非常に良く理解されていますが、最適化の余地があります。",
+    //   commentFeedback: "コメントは役立ちますが、もう少し具体的な説明が欲しいです。",
+    // },)
+    setState(FeedBack)
+    analyzeComment(code).then(analyzedResult=>{
+          setScore(analyzedResult.scores);
+          setFeedback(analyzedResult.feedbacks);
+          setState(FeedBack);
+    });
     }catch(e){
       console.log(`採点中にエラーだよ${e}`);
     }
@@ -49,6 +76,17 @@ export default function Home() {
     setCode(getProblemByTitle(selectedIndex)); // 選ばれた問題に基づいてコードを更新
   };
 
+  const fetchHint = async (): Promise<void> => {
+      try {
+        setState(OpenHint);
+        createHint(code)
+          .then(h=>{
+            sethint(h as string)
+          })
+      } catch (e) {
+        console.log(`ヒント作成中にエラーだよ${e}`);
+      }
+  }
   const router = useRouter();
   
   return (
@@ -94,13 +132,13 @@ export default function Home() {
 
           {state === OpenHint && (
             <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "80%" }}>
-              <Typography>ヒント</Typography>
+              <Typography>{hint}</Typography>
             </Box>
           )}
           {/* コード入力 */}
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography variant="h3">コメントの入力</Typography>
-            <Button variant="contained" onClick={()=>setState(OpenHint)}>ヒント</Button>
+            <Button variant="contained" onClick={()=>fetchHint()}>ヒント</Button>
           </Box>
           
           <TextField
@@ -120,34 +158,30 @@ export default function Home() {
         </Stack>
       {/* stateがFeedBackの場合のみ見えるブロック */}
       {state === FeedBack && (
-        <Box>
-          <Typography variant="h5" sx={{ mt: 3 }}>採点結果</Typography>
-          <Grid container spacing={2}>
-            {/* コードの理解 */}
-            <Grid item xs={6} sx={{ overflow: "hidden" }}>
-              <Typography>コードの理解</Typography>
-              <Typography>点数:{score} / 10</Typography>
-            </Grid>
-
-            {/* コメントの評価 */}
-            <Grid item xs={6} sx={{ overflow: "hidden" }}>
-              <Typography>コメントの評価</Typography>
-              <Typography>点数:{score} / 10</Typography>
-            </Grid>
-
-            {/* コードの理解についてのフィードバック */}
-            <Grid item xs={6}>
-              <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "80%" }}>
-                <Typography>コードの理解についてのフィードバック</Typography>
+        <Box sx={{ display:"flex" }}>
+          {/* ここに、レーダーチャートとフィードバックを入れたい */}
+          <Grid container spacing={4} justifyContent="space-between" alignItems="flex-start">
+            {/* レーダーチャート */}
+            <Grid item xs={12} md={6}>
+              <Box>
+                {renderRadarChart(score)}
               </Box>
             </Grid>
-
-            {/* コメントの評価についてのフィードバック */}
-            <Grid item xs={6}>
-              <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "80%" }}>
-                <Typography>コメントの評価についてのフィードバック</Typography>
-              </Box>
-            </Grid>
+            <Grid item xs={12} md={6}>
+          <Box>
+            <Typography variant="h5" gutterBottom>
+              フィードバック
+            </Typography>
+            <Card sx={{ padding: 2, marginBottom: 2 }}>
+              <Typography variant="h6">コードの読解に関するフィードバック</Typography>
+              <Typography>{feedback.codeFeedback}</Typography>
+            </Card>
+            <Card sx={{ padding: 2 }}>
+              <Typography variant="h6">コメントの適切さに関するフィードバック</Typography>
+              <Typography>{feedback.commentFeedback}</Typography>
+            </Card>
+          </Box>
+        </Grid>
           </Grid>
         </Box>
       )}
