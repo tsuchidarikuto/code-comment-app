@@ -46,11 +46,11 @@ export default async function analyzeComment(codeWithComment: string){
         });        
         
         //{score:number,feedback:string}の形式で返ってくる
-        const data = await response.json();
+        const result = await response.json();
         
-        console.log(data);
+        console.log(result);
         
-        return data;
+        return result;
 
     } catch (e) {
         console.log(e);

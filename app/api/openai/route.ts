@@ -19,6 +19,8 @@ export async function POST(req: NextRequest) {
                 score: z.number(),
                 feedback: z.string(),
             });
+        } else if(schemaName === "createHint"){//ヒント作成
+            schema = undefined;
         } else if(schemaName === "undefined"){//未定義
             schema = undefined;
         }
@@ -36,10 +38,10 @@ export async function POST(req: NextRequest) {
             ],
             response_format: schema ? zodResponseFormat(schema, "schema"):undefined,
         });
-
+        //スキーマが存在する場合はオブジェクトを、存在しない場合はテキストを返す 
         const response = schema ? completion.choices[0].message.parsed : completion.choices[0].message.content;
         console.log(response);
-//hello
+
         return NextResponse.json(response);
     } catch (e) {
         console.error('Error during OpenAI API call:', e);
