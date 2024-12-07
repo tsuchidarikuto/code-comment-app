@@ -22,10 +22,10 @@ export default function Home() {
     try{
     //コメント付きコードを解析
     //戻り値はJSON形式でスコアとフィードバック
-      const analyzedResult: ResultTypes = await analyzeComment(code);
+    const analyzedResult: ResultTypes = await analyzeComment(code);
     
-    setScore(analyzedResult.score);
-    setFeedback(analyzedResult.feedback);
+    setScore(analyzedResult.scores.appropriateness);
+    setFeedback(analyzedResult.feedbacks.codeFeedback);
     
 
     
