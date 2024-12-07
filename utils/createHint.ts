@@ -1,7 +1,7 @@
 'use client';
 
 
-export default async function createHint(codeWithComment: string){
+export default async function createHint(codeWithComment: string): Promise<string>{
     try {        
         //モデル名
         const model = "gpt-4o-mini-2024-07-18";
