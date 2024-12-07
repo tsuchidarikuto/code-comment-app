@@ -26,8 +26,12 @@ export default async function analyzeComment(codeWithComment: string){
             `
         //入力されるコメント付きコード
         const prompt = codeWithComment;
+
+        //スキーマ名
+        const schemaName = "analyzeComment";
+
         //app/api/openai/route.tsの中間APIの呼び出し
-        const response = await fetch('api/openai', {
+        const response = await fetch('/api/openai', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -36,12 +40,15 @@ export default async function analyzeComment(codeWithComment: string){
                 model: model,
                 system:system,
                 prompt: prompt,
+                schemaName: schemaName,
                 
             }),
         });        
         
         //{score:number,feedback:string}の形式で返ってくる
         const data = await response.json();
+        
+        console.log(data);
         
         return data;
 
