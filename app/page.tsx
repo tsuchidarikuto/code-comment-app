@@ -25,7 +25,7 @@ export interface feedbacks{
 export default function Home() {
   const [code, setCode] = useState("");
   const [score, setScore] = useState<scores>();
-  const [feedback, setFeedback] = useState<feedbacks>();
+  const [feedback, setFeedback] = useState<feedbacks>({codeFeedback:"",commentFeedback:""});
   const [selectedProblem, setSelectedProblem] = useState<string>("");
   const [state, setState] = useState<number>(100);
   const [hint, sethint] = useState<string>("");
