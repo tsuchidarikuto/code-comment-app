@@ -1,7 +1,7 @@
 import { ResultTypes,historyTypes } from "@/types";
 import {v4 as uuidv4} from "uuid";
 
-export function saveToLoaclStorage(Result: ResultTypes,title:string,code:string): boolean {
+export function saveToLocalStorage(Result: ResultTypes,title:string,code:string): boolean {
     //ローカルストレージにデータを保存し、成功したらtrueを返す
     try{
         const exiistingData:historyTypes[] = JSON.parse(localStorage.getItem("result") || "[]");//ローカルストレージから既存のデータをオブジェクトの配列で取得.JSONに変換
