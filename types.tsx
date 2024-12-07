@@ -1,7 +1,8 @@
 export type OpenaiTypes={
     model:string;
     prompt:string;
-    system:string;   
+    system:string;  
+    schemaName:string; 
 }
 
 export type ResultTypes={
