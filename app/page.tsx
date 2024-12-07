@@ -1,10 +1,11 @@
 'use client';
 
-import { Button,Box, Stack, Typography, Container,TextField, Select, MenuItem } from "@mui/material";
+import { Button,Box, Stack, Typography, Container,TextField, Select, MenuItem, Grid } from "@mui/material";
 import { useState, useEffect, use } from "react";
 import analyzeComment from "@/utils/analyzeComment";
 import { ResultTypes } from "@/types";
 import questions from "@/app/problems";
+import { auto } from "openai/_shims/registry.mjs";
 
 
 export default function Home() {
@@ -12,11 +13,11 @@ export default function Home() {
   const [score, setScore] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<string>("");
   const [selectedProblem, setSelectedProblem] = useState<string>("");
-
   const [state, setState] = useState<number>(100);
 
   const Answering = 100;
-  const FeedBack = 101;
+  const OpenHint = 101;
+  const FeedBack = 102;
 
   useEffect(() => {
     setCode(questions[0]);
@@ -30,15 +31,16 @@ export default function Home() {
       const analyzedResult: ResultTypes = await analyzeComment(code);
       setScore(analyzedResult.score);
       setFeedback(analyzedResult.feedback);
+      setState(FeedBack);
     } catch (e) {
       console.log(`採点中にエラーだよ ${e}`);
     }
   };
 
   const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setSelectedProblem(event.target.value as string);
-    setCode(questions[event.target.value as number])
-    // 問題を受け取り、setCodeを使用
+    const selectedIndex = event.target.value as number;
+    setSelectedProblem(selectedIndex);
+    setCode(questions[selectedIndex]); // 選ばれた問題に基づいてコードを更新
   };
 
   return (
@@ -61,37 +63,73 @@ export default function Home() {
               sx={{ width: 300 }}
             >
               <MenuItem value="" disabled>問題を選択</MenuItem>
-              <MenuItem value="1">問題1</MenuItem>
-              <MenuItem value="2">問題2</MenuItem>
-              <MenuItem value="3">問題3</MenuItem>
+              <MenuItem value={0}>問題1</MenuItem>
+              <MenuItem value={1}>問題2</MenuItem>
+              <MenuItem value={2}>問題3</MenuItem>
             </Select>
           </Box>
 
+          {state === OpenHint && (
+            <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "80%" }}>
+              <Typography>ヒント</Typography>
+            </Box>
+          )}
           {/* コード入力 */}
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography variant="h3">コメントの入力</Typography>
+            <Button variant="contained" onClick={()=>setState(OpenHint)}>ヒント</Button>
+          </Box>
+          
           <TextField
             multiline
-            rows={5}
+            rows={10}
             value={code}
             onChange={(e) => setCode(e.target.value)}
-            sx={{ width: "100%", alignSelf: "center" }}
+            sx={{ width: "100%", alignSelf: "center"}}
+            disabled={state === FeedBack}
           />
-
-          {/* スコアとフィードバック */}
-          <Box sx={{ height: "100%" }}>
-            <Typography>
-              スコア: {score}点
-            </Typography>
-            <Typography>
-              フィードバック: {feedback}
-            </Typography>
-          </Box>
-
           {/* 採点ボタン */}
-          <Button variant="contained" sx={{ width: "fit-content", alignSelf: "left" }} onClick={handleClick}>
-            採点
-          </Button>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+            <Button variant="contained" sx={{ width: 'fit-content', marginRight: "10px"}} onClick={handleClick}>
+              採点
+            </Button>
+          </Box>
         </Stack>
       </Container>
+      {/* stateがFeedBackの場合のみ見えるブロック */}
+      {state === FeedBack && (
+  <Box>
+    <Typography variant="h5" sx={{ mt: 3 }}>採点結果</Typography>
+    <Grid container spacing={2}>
+      {/* コードの理解 */}
+      <Grid item xs={6} sx={{ overflow: "hidden" }}>
+        <Typography>コードの理解</Typography>
+        <Typography>点数:{score} / 10</Typography>
+      </Grid>
+
+      {/* コメントの評価 */}
+      <Grid item xs={6} sx={{ overflow: "hidden" }}>
+        <Typography>コメントの評価</Typography>
+        <Typography>点数:{score} / 10</Typography>
+      </Grid>
+
+      {/* コードの理解についてのフィードバック */}
+      <Grid item xs={6}>
+        <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "80%" }}>
+          <Typography>コードの理解についてのフィードバック</Typography>
+        </Box>
+      </Grid>
+
+      {/* コメントの評価についてのフィードバック */}
+      <Grid item xs={6}>
+        <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "80%" }}>
+          <Typography>コメントの評価についてのフィードバック</Typography>
+        </Box>
+      </Grid>
+    </Grid>
+  </Box>
+)}
+
     </Box>
   );
 }
