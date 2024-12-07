@@ -1,9 +1,11 @@
 'use client';
 
 import { Button,Box, Stack, Typography, Container,TextField, Select, MenuItem } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect, use } from "react";
 import analyzeComment from "@/utils/analyzeComment";
 import { ResultTypes } from "@/types";
+import questions from "@/app/problems";
+
 
 export default function Home() {
   const [code, setCode] = useState("");
@@ -16,6 +18,11 @@ export default function Home() {
   const Answering = 100;
   const FeedBack = 101;
 
+  useEffect(() => {
+    setCode(questions[0]);
+  }
+  , []);
+  
   const handleClick = async (): Promise<void> => {
     try {
       // コメント付きコードを解析
