@@ -60,8 +60,8 @@ export default function History() {
       <Typography variant="h4" gutterBottom>
         履歴
       </Typography>
-      {pre.map(his=>(
-        <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "80%", margin:"20px"}}>
+      {pre.map((his,i)=>(
+        <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "80%", margin:"20px"}} key={i}>
           <Card sx={{ padding: 2, backgroundColor: "#f5f5f5", whiteSpace: "pre-wrap" }}>
             <Typography component="pre" sx={{ fontFamily: "monospace" }}>
               {his.answer}

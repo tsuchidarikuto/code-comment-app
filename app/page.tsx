@@ -88,7 +88,7 @@ export default function Home() {
               {/* <MenuItem value={0}>問題1</MenuItem>
               <MenuItem value={1}>問題2</MenuItem>
               <MenuItem value={2}>問題3</MenuItem> */}
-              {questionNameList.map((questionName)=>(<MenuItem value={questionName}>{questionName}</MenuItem>))}
+              {questionNameList.map((questionName,i)=>(<MenuItem value={questionName} key={i}>{questionName}</MenuItem>))}
             </Select>
           </Box>
 
