@@ -7,6 +7,7 @@ export type OpenaiTypes={
 
 export type ResultTypes={
     scores: {
+        knowledge:number;//基礎知識
         appropriateness:number;//適切性
         clarity:number;//明確性
         consistency:number;//一貫性
