@@ -7,7 +7,7 @@ import { ResultTypes } from "@/types";
 
 
 export default function Home() {
-  const [code, setCode] = useState("");//後から編集する、DBから取得？
+  const [code, setCode] = useState("console.log('Hello, World2!');");//後から編集する、DBから取得？
 
   const [score, setScore] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<string>("");
@@ -34,10 +34,11 @@ export default function Home() {
     <Box sx={{ width: '100%', mt: 10, margin: 2 }}>
     <Container>
     <Stack spacing={5}>
-        <Typography variant="h5" component="h1" sx={{ textAlign: 'center' }}>
-          コードにコメントつけるアプリ
-        </Typography>
-        
+      <header>
+        <Button variant="text" component="h1" sx={{ textAlign: 'left' }}>code-comment-add</Button> 
+        <Button variant="text" component="h1" sx={{ textAlign: 'right' }}>履歴</Button>{/* 右寄せしたい */}
+        </header>
+              
           {
           <TextField  
             multiline 
