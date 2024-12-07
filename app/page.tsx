@@ -1,6 +1,6 @@
 'use client';
 
-import { Button,Box, Stack, Typography, Container,TextField } from "@mui/material";
+import { Button,Box, Stack, Typography, Container,TextField, Select, MenuItem } from "@mui/material";
 import { useState } from "react";
 import analyzeComment from "@/utils/analyzeComment";
 import { ResultTypes } from "@/types";
@@ -38,7 +38,17 @@ export default function Home() {
         <Button variant="text" component="h1" sx={{ textAlign: 'left' }}>code-comment-add</Button> 
         <Button variant="text" component="h1" sx={{ textAlign: 'right' }}>履歴</Button>{/* 右寄せしたい */}
         </header>
-              
+        <Box sx={{ display: 'flex', gap: 2 }}>
+        <Typography variant="h4">問題選択</Typography>
+        <Select
+        displayEmpty
+        sx={{ width: 300 }}>
+        <MenuItem value="" disabled>問題を選択</MenuItem>
+        <MenuItem>問題1</MenuItem>
+        <MenuItem>問題2</MenuItem>
+        <MenuItem>問題3</MenuItem>
+        </Select>
+        </Box>
           {
           <TextField  
             multiline 
