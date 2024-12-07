@@ -18,3 +18,11 @@ export type ResultTypes={
         commentFeedback:string;//コメントの適切さに関するフィードバック
     };    
 }
+
+export type historyTypes = {
+    id:string;
+    title:string;
+    code:string;
+    scores: ResultTypes["scores"];
+    feedbacks: ResultTypes["feedbacks"];
+}
