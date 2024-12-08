@@ -104,7 +104,7 @@ export default function Home() {
               variant="text" 
               component="h1" 
               sx={{ textAlign: 'left' }}
-              onClick={() => router.push('/')}
+              onClick={() => window.location.reload()}
             >
               <span style={{ textTransform: 'none' }}>CoMentōr</span>
             </Button>
