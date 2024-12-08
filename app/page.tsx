@@ -201,7 +201,7 @@ export default function Home() {
           )}
   
           {/* 評価基準の表示 */}
-          {state === Answering && (
+          {state === FeedBack && (
             <Box sx={{ mt: 4 }}>
               <Typography variant="h5" gutterBottom>評価基準</Typography>
               <Typography variant="body1" gutterBottom>
