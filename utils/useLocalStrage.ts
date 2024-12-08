@@ -1,3 +1,4 @@
+'use client'
 import { ResultTypes,historyTypes } from "@/types";
 import {v4 as uuidv4} from "uuid";
 
