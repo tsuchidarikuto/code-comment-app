@@ -25,10 +25,10 @@ export default function History() {
           <Button 
             variant="text" 
             component="h1" 
-            sx={{ textAlign: 'left' }}
+            sx={{ textAlign: 'left', textTransform: 'none' }}
             onClick={() => router.push('/')}
             >
-            code-comment-add
+            CoMentōr
           </Button>
           <Button
             variant="text"
