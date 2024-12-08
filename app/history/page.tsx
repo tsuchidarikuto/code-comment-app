@@ -27,9 +27,7 @@ export default function History() {
             component="h1" 
             sx={{ textAlign: 'left' }}
             onClick={() => router.push('/')}
-            >
-            code-comment-add
-          </Button>
+            >CoMentōr</Button>
           <Button
             variant="text"
             component="h1"
