@@ -201,7 +201,7 @@ export default function Home() {
           )}
   
           {/* 評価基準の表示 */}
-          {state === FeedBack && (
+          
             <Box sx={{ mt: 4 }}>
               <Typography variant="h5" gutterBottom>評価基準</Typography>
               <Typography variant="body1" gutterBottom>
@@ -220,7 +220,6 @@ export default function Home() {
                 <strong>有用性:</strong> コメントが実際に役立つ情報を提供しているかを評価します。将来のメンテナンスに役立つ情報、バグ修正や機能追加の際に参考になる情報など。
               </Typography>
             </Box>
-          )}
         </Stack>
       </Container>
     </Box>
