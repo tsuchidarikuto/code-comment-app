@@ -8,10 +8,16 @@ import { loadFromLocalStorage } from "@/utils/useLocalStrage";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 // 必要なスタイルをインポート
 import * as PrismStyles from "react-syntax-highlighter/dist/esm/styles/prism";
+import { useState, useEffect } from "react";
 
 export default function History() {
+  const [pre, setPre] = useState<historyTypes[]>([]);
   const router = useRouter();
-  const pre:historyTypes[] = loadFromLocalStorage()
+
+  useEffect(() => {
+    const storedData = loadFromLocalStorage();
+    setPre(storedData);
+  }, []);
   return (
     <Box sx={{ width: "100%"}}>
       <Container>
