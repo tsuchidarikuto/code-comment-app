@@ -101,7 +101,7 @@ export default function Home() {
   };
 
   const calculateEditorHeight = (code: string): string => {
-    const lineHeight = 18; // 1行の高さ (ピクセル)
+    const lineHeight = 20; // 1行の高さ (ピクセル)
     const numberOfLines = code.split('\n').length;
     const height = numberOfLines * lineHeight;
     return `${Math.max(height, 100)}px`; // 最低でも100pxの高さを保証
