@@ -132,7 +132,7 @@ export default function Home() {
               sx={{ textAlign: 'left' }}
               onClick={() => router.push('/')}
             >
-              code-comment-add
+              <span style={{ textTransform: 'none' }}>CoMentōr</span>
             </Button>
             <Button
               variant="text"
