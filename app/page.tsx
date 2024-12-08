@@ -1,13 +1,14 @@
 'use client';
 
 import { Button,Box, Stack, Typography, Container,TextField, Select, MenuItem, Grid, Card, SelectChangeEvent, CircularProgress } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import analyzeComment from "@/utils/analyzeComment";
 import createHint from "@/utils/createHint";
 import { getProblemByTitle ,getTitles} from "@/app/problems";
 import { useRouter } from "next/navigation";
 import { renderRadarChart } from "./Chart";
 import { saveToLocalStorage } from "@/utils/useLocalStrage";
+import MonacoEditor from '@monaco-editor/react';
 
 export interface scores{
     knowledge:number;//基礎知識
@@ -92,8 +93,33 @@ export default function Home() {
         setState(Answering);
       }
   }
+
+  const handleEditorChange = (newValue: string | undefined) => {
+    if (newValue !== undefined) {
+      setCode(newValue);
+    }
+  };
+
+  const calculateEditorHeight = (code: string): string => {
+    const lineHeight = 18; // 1行の高さ (ピクセル)
+    const numberOfLines = code.split('\n').length;
+    const height = numberOfLines * lineHeight;
+    return `${Math.max(height, 100)}px`; // 最低でも100pxの高さを保証
+  };
+
   const router = useRouter();
   
+  useEffect(() => {
+    // Monaco Editorの診断設定をオフにする
+    if (typeof monaco !== 'undefined') {
+      // エディタでエラーや警告の表示を無効化
+      monaco.languages.typescript.getDiagnosticsOptions = () => ({
+        noSemanticValidation: true,
+        noSyntaxValidation: true,
+      });
+    }
+  }, []);
+
   return (
     <Box sx={{ width: '100%', mt: 10, margin: 2 }}>
       <Container>
@@ -155,13 +181,22 @@ export default function Home() {
             </Button>
           </Box>
   
-          <TextField
-            multiline
-            rows={code.split('\n').length || 1}
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            sx={{ width: "100%", alignSelf: "center", backgroundColor: "#f5f5f5" }}
-            disabled={state === FeedBack}
+          <MonacoEditor
+            height={calculateEditorHeight(code)}  // コード行数に基づいて高さを設定
+            language="javascript"  // 言語設定（必要に応じて変更）
+            value={code}  // エディタの内容
+            onChange={handleEditorChange}  // 内容が変更されたときに実行される
+            options={{
+              readOnly: state === 100,  // stateが100の場合は読み取り専用に設定
+              theme: 'vs',  // テーマ設定（vsはVisual Studioのようなテーマ）
+              scrollBeyondLastLine: false,  // 最後の行を越えてスクロールできないようにする
+              wordWrap: "on",  // テキストの折り返しを有効にする
+              minimap: { enabled: false },  // ミニマップを無効にする
+              scrollbar: {
+                vertical: 'hidden',  // 垂直スクロールバーを非表示にする
+                horizontal: 'hidden',  // 水平スクロールバーを非表示にする
+              },
+            }}
           />
   
           {/* 採点ボタン */}
