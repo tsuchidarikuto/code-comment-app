@@ -12,16 +12,21 @@
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
     "@mui/material": "^6.1.9",
+    "chart.js": "^4.4.7",
     "next": "15.0.3",
     "openai": "^4.73.1",
     "react": "^18.3.1",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
+    "react-syntax-highlighter": "^15.6.1",
+    "uuid": "^11.0.3",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/react-syntax-highlighter": "^15.5.13",
     "eslint": "^8",
     "eslint-config-next": "15.0.3",
     "typescript": "^5"
