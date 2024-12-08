@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { historyTypes } from "@/types";
 import { renderRadarChart } from "../Chart";
 import { loadFromLocalStorage } from "@/utils/useLocalStrage";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+// 必要なスタイルをインポート
+import * as PrismStyles from "react-syntax-highlighter/dist/esm/styles/prism";
 
 export default function History() {
   const router = useRouter();
@@ -33,16 +36,15 @@ export default function History() {
       <Typography variant="h4" gutterBottom>
         履歴
       </Typography>
-      {pre.map((his,i)=>(
-          <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "100%", margin:"20px"}} key={i}>
-            <Typography variant="h4">{his.title}</Typography>
-            <Card sx={{ padding: 2, backgroundColor: "#f5f5f5", whiteSpace: "pre-wrap" }}>
-            <Typography component="pre" sx={{ fontFamily: "monospace" }}>
-              {his.code}
-            </Typography>
-          </Card> 
+      {pre.reverse().map((his)=>(
+          <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "100%", margin:"20px"}} key={his.id}>
+            <SyntaxHighlighter
+                language="javascript"
+                style={PrismStyles["coldarkCold"]}
+              >
+                {his.code}
+              </SyntaxHighlighter>
             <Box sx={{ display:"flex" }}>
-                {/* ここに、レーダーチャートとフィードバックを入れたい */}
                 <Grid container spacing={4} justifyContent="space-between" alignItems="flex-start">
                   {/* レーダーチャート */}
                   <Grid item xs={12} md={6}>
