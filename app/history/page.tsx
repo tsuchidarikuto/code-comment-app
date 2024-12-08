@@ -8,7 +8,7 @@ import { loadFromLocalStorage } from "@/utils/useLocalStrage";
 
 export default function History() {
   const router = useRouter();
-  const pre:historyTypes[] = loadFromLocalStorage().filter((his: any) => Array.isArray(his) && his.length > 0);
+  const pre:historyTypes[] = loadFromLocalStorage()
   return (
     <Box sx={{ width: "100%"}}>
       <Container>
