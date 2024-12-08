@@ -1,6 +1,6 @@
 'use client';
 
-import { Button,Box, Stack, Typography, Container,TextField, Select, MenuItem, Grid, Card, SelectChangeEvent, CircularProgress } from "@mui/material";
+import { Button,Box, Stack, Typography, Container, Select, MenuItem, Grid, Card, SelectChangeEvent, CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 import analyzeComment from "@/utils/analyzeComment";
 import createHint from "@/utils/createHint";
@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { renderRadarChart } from "./Chart";
 import { saveToLocalStorage } from "@/utils/useLocalStrage";
 import MonacoEditor from '@monaco-editor/react';
+import * as monaco from 'monaco-editor';
 
 export interface scores{
     knowledge:number;//基礎知識
@@ -110,12 +111,13 @@ export default function Home() {
   const router = useRouter();
   
   useEffect(() => {
-    // Monaco Editorの診断設定をオフにする
     if (typeof monaco !== 'undefined') {
       // エディタでエラーや警告の表示を無効化
-      monaco.languages.typescript.getDiagnosticsOptions = () => ({
-        noSemanticValidation: true,
-        noSyntaxValidation: true,
+      // TypeScriptの診断設定を無効化するための方法
+      monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+        noSyntaxValidation: true, // 構文エラーを無視
+        noSemanticValidation: true, // 型エラーを無視
+        noSuggestionDiagnostics: true, // 提案エラーを無視
       });
     }
   }, []);
@@ -187,7 +189,7 @@ export default function Home() {
             value={code}  // エディタの内容
             onChange={handleEditorChange}  // 内容が変更されたときに実行される
             options={{
-              readOnly: state === 100,  // stateが100の場合は読み取り専用に設定
+              readOnly: state !== 100,  // stateが100の場合は読み取り専用に設定
               theme: 'vs',  // テーマ設定（vsはVisual Studioのようなテーマ）
               scrollBeyondLastLine: false,  // 最後の行を越えてスクロールできないようにする
               wordWrap: "on",  // テキストの折り返しを有効にする
